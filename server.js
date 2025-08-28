@@ -18,14 +18,14 @@ app.get("/ping", (req, res) => {
 const callAllApis = async () => {
     try {
         const results = await Promise.allSettled(
-            apiList.map(api => axios.get(api.url))
+            apiList.map((api) => axios.get(api.url))
         );
 
         results.forEach((result, idx) => {
-            if (result.success == "true") {
-                console.log(`✅ ${apiList[idx].name} response`);
+            if (result.status === "fulfilled") {
+                console.log(`✅ ${apiList[idx].name}`);
             } else {
-                console.error(`❌ ${apiList[idx].name} failed`);
+                console.error(`❌ ${apiList[idx].name}`);
             }
         });
     } catch (err) {
