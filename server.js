@@ -17,9 +17,17 @@ app.get("/ping", (req, res) => {
 // Function to call all APIs in parallel
 const callAllApis = async () => {
     try {
-        await Promise.allSettled(
+        const results = await Promise.allSettled(
             apiList.map(api => axios.get(api.url))
         );
+
+        results.forEach((result, idx) => {
+            if (result.success == "true") {
+                console.log(`✅ ${apiList[idx].name} response`);
+            } else {
+                console.error(`❌ ${apiList[idx].name} failed`);
+            }
+        });
     } catch (err) {
         console.error("Unexpected error:", err.message);
     }
